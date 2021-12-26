@@ -39,43 +39,8 @@ __HELP__ = """
 - Get Settings DashBoard.
 """
 
-
-@app.on_message(filters.new_chat_members, group=welcome_group)
-async def welcome(_, message: Message):
-    chat_id = message.chat.id
-    if await is_served_chat(chat_id):
-        pass
-    else:
-        await add_served_chat(chat_id)
-    if chat_id in await blacklisted_chats():
-        await message.reply_text(
-            f"Hushh, Your chat group[{message.chat.title}] has been blacklisted!\n\nAsk any Sudo User to whitelist your chat"
-        )
-        await app.leave_chat(chat_id)
-    for member in message.new_chat_members:
-        try:
-            if member.id in OWNER_ID:
-                return await message.reply_text(
-                    f"{MUSIC_BOT_NAME}'s Owner[{member.mention}] has just joined your chat."
-                )
-            if member.id in SUDOERS:
-                return await message.reply_text(
-                    f"A member of {MUSIC_BOT_NAME}'s Sudo User[{member.mention}] has just joined your chat."
-                )
-            if member.id == ASSID:
-                await remove_active_chat(chat_id)
-            if member.id == BOT_ID:
-                out = start_pannel()
-                await message.reply_text(
-                    f"Welcome To {MUSIC_BOT_NAME}\n\nPromote me as administrator in your group otherwise I will not function properly.",
-                    reply_markup=InlineKeyboardMarkup(out[1]),
-                )
-                return
-        except:
-            return
-
-
-@app.on_message(filters.command(["help", "start"]) & filters.group)
+  
+@app.on_message(filters.command(["helpvc", "startvc"]) & filters.group)
 @PermissionCheck
 async def useradd(_, message: Message):
     out = start_pannel()
